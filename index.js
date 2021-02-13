@@ -7,44 +7,77 @@ const pool = require("./db_config");
 app.use(cors());
 app.use(express.json());
 
+// // create a user
+// app.post("/users", async (req, res) => {
+//   try {
+//     console.log(req.body);
+//     const {
+//       id,
+//       name,
+//       family_name,
+//       email,
+//       promo_code,
+//       country,
+//       city,
+//       street,
+//       zip_code,
+//       password,
+//       spare1,
+//       spare2,
+//       spare3,
+//       spare4,
+//     } = req.body;
+
+//     const addUser = await pool.query(
+//       "INSERT INTO users (id, name, family_name, email, promo_code, country, city, street, zip_code, password, spare1, spare2, spare3, spare4) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14) RETURNING *",
+//       [
+//         id,
+//         name,
+//         family_name,
+//         email,
+//         promo_code,
+//         country,
+//         city,
+//         street,
+//         zip_code,
+//         password,
+//         spare1,
+//         spare2,
+//         spare3,
+//         spare4,
+//       ]
+//     );
+//     //user_id | user_name
+//     res.json(addUser.rows[0]);
+//   } catch (error) {
+//     console.log(error);
+//   }
+// });
+
+
 // create a user
 app.post("/users", async (req, res) => {
   try {
     console.log(req.body);
     const {
-      id,
       name,
       family_name,
       email,
       promo_code,
-      country,
-      city,
-      street,
-      zip_code,
-      password,
-      spare1,
-      spare2,
-      spare3,
-      spare4,
+      password
     } = req.body;
 
+    // This is okay for such small systems, similar to a uuid
+    const id = Math.floor((Math.random() * 10000000) + 1);
     const addUser = await pool.query(
-      "INSERT INTO users (id, name, family_name, email, promo_code, country, city, street, zip_code, password, spare1, spare2, spare3, spare4) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14) RETURNING *",
+      "INSERT INTO users (id, name, family_name, email, promo_code, password) VALUES($1, $2, $3, $4, $5, $6) RETURNING *",
       [
         id,
         name,
         family_name,
         email,
         promo_code,
-        country,
-        city,
-        street,
-        zip_code,
-        password,
-        spare1,
-        spare2,
-        spare3,
-        spare4,
+        password
       ]
     );
     //user_id | user_name
@@ -53,6 +86,7 @@ app.post("/users", async (req, res) => {
     console.log(error);
   }
 });
+
 
 // get all users
 app.get("/users", async (req, res) => {
@@ -64,14 +98,27 @@ app.get("/users", async (req, res) => {
   }
 });
 
-// get user by id
-app.get("/users/:id", async (req, res) => {
+// get user by email
+app.get("/users/:email", async (req, res) => {
   try {
-    const { id } = req.params;
-    const getUser = await pool.query("SELECT * FROM users WHERE id = $1;", [
-      id,
+    const { email } = req.params;
+    const getUser = await pool.query("SELECT * FROM users WHERE email = $1;", [
+      email,
     ]);
-    res.json(getUser.rows);
+    res.json(getUser.rows[0]);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+// get user by id
+app.get("/users/:email/:password", async (req, res) => {
+  try {
+    const { email, password } = req.params;
+    const getUser = await pool.query("SELECT * FROM users WHERE email = $1 AND password = $2;", [
+      email,password
+    ]);
+    res.json(getUser.rows[0]);
   } catch (error) {
     console.log(error);
   }
