@@ -3,25 +3,19 @@ const app = express ();
 const cors = require ('cors');
 const pool = require ('./db_config');
 const nodemailer = require ('nodemailer');
+const path = require ('path');
+
 const crypto = require ('crypto');
 const {v4: uuidv4} = require ('uuid');
 // middleware
 app.use (cors ());
 app.use (express.json ());
 
-
-
-
 if (process.env.NODE_ENV === 'production') {
-  // Express will serve up production assets
-  // like main.js or main.css
-  app.use(express.static('cs-frontend/build'));
+  app.use (express.static (path.join (__dirname, 'cs-frontend', 'build')));
 
-  // Express will serve up the index.html file if
-  // it doesnt recognize the route
-  const path = require('path');
-  app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, 'cs-frontend', 'build', 'index.html'));
+  app.get ('/', function (req, res) {
+    res.sendFile (path.join (__dirname, 'cs-frontend', 'build', 'index.html'));
   });
 }
 
