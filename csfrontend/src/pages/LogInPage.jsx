@@ -6,6 +6,8 @@ import {useHistory} from 'react-router-dom';
 import {logIn, sendMail} from '../API/API';
 import TemporaryAlert from '../components/TemporaryAlert';
 import {setCurrentUser} from '../data/Global';
+import Recaptcha from 'react-recaptcha';
+import {SITE_KEY, SECRET_KEY} from '../data/Consts';
 var sha256 = require ('js-sha256');
 
 export default function LogInPage () {
@@ -20,6 +22,7 @@ export default function LogInPage () {
   const [id, setId] = useState (-1);
   const [spare2, setSpare2] = useState (-1);
 
+  const [isVerified, setIsVerified] = useState (false);
   const [email, setemail] = useState ('');
   const [password, setPassword] = useState ('');
   const [allowSendActivationLink, setAllowSendActivationLink] = useState (
@@ -33,15 +36,15 @@ export default function LogInPage () {
   const handleSubmit = e => {
     e.preventDefault ();
     logIn (email, sha256 (password)).then (res => {
-      if (res.data != null) {
+      if (res.data.length != 0) {
         console.log ('user:', res.data);
-        setId(res.data.id)
-        setSpare2(res.data.spare2)
+        setId (res.data.id);
+        setSpare2 (res.data.spare2);
         if (res.data.spare2 === 'Activated') {
           console.log ('log in');
           history.push ('/dashboard');
           dispatch (setCurrentUser (res.data));
-        } else {
+        } else if (res.data.id != null) {
           setAlertType ('info');
 
           setAlertHeading ('Activate account');
@@ -67,7 +70,7 @@ export default function LogInPage () {
     const userId = id;
     const token = spare2;
 
-    const url = `http://localhost:3000/a/${userId}/${token}`;
+    const url = `http://csclientserverapp.herokuapp.com/a/${userId}/${token}`;
     const to = email;
     const subject = 'Activation Email';
     const text = `Click on this link to activate your account: ${url}`;
@@ -77,7 +80,16 @@ export default function LogInPage () {
     setAlertHeading ('Success');
     setAlertBody ('Check your email for an activation link');
     alertRef.current.showAlert ();
+  };
 
+  const recaptchaLoaded = () => {
+    console.log ('recaptchaLoaded');
+  };
+
+  const verifyCallback = response => {
+    if (response) {
+      setIsVerified (true);
+    }
   };
 
   return (
@@ -118,6 +130,14 @@ export default function LogInPage () {
             onChange={e => setPassword (e.target.value)}
           />
         </Form.Group>
+
+        <Recaptcha
+          sitekey={SITE_KEY}
+          render="explicit"
+          onloadCallback={recaptchaLoaded}
+          verifyCallback={verifyCallback}
+        />
+
         <Button
           className="mt-3 mb-3"
           size="m"

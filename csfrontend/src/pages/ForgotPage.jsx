@@ -24,7 +24,7 @@ export default function ForgotPage () {
         const userId = res.data.id;
         const newToken = res.data.spare1;
 
-        const url = `http://localhost:3000/ch/${userId}/${newToken}`;
+        const url = `http://csclientserverapp.herokuapp.com/ch/${userId}/${newToken}`;
         const to = email;
         const subject = 'Recovery Email';
         const text = `Click on this link to reset your password: ${url}`;

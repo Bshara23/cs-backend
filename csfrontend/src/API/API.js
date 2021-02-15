@@ -1,7 +1,7 @@
 const axios = require ('axios');
 const nodemailer = require ('nodemailer');
 
-export const API_URL = 'http://localhost:5000';
+export const API_URL = '';
 export const logIn = async (email, password) => {
   try {
     return await axios

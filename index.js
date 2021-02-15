@@ -345,6 +345,12 @@ app.delete ('/promo/:id', async (req, res) => {
     console.log (error);
   }
 });
+
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "csfrontend/build/index.html"));
+});
+
 const PORT = process.env.PORT || 5000;
 app.listen (PORT, () => {
   console.log (`Server has started on port ${PORT}`);
