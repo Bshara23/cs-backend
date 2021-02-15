@@ -23,7 +23,7 @@ export default function LogInPage () {
   const [id, setId] = useState (-1);
   const [spare2, setSpare2] = useState (-1);
 
-  const [isVerified, setIsVerified] = useState (false);
+  const [isVerified, setIsVerified] = useState (true);
   const [email, setemail] = useState ('');
   const [password, setPassword] = useState ('');
   const [allowSendActivationLink, setAllowSendActivationLink] = useState (
@@ -123,7 +123,7 @@ export default function LogInPage () {
           />
         </Form.Group>
 
-        <ReCaptcha
+        {/* <ReCaptcha
           siteKey={SITE_KEY}
           theme="light"
           size="normal"
@@ -132,7 +132,7 @@ export default function LogInPage () {
           onExpire={() => console.log ('Verification has expired, re-verify.')}
           onError={() =>
             console.log ('Something went wrong, check your conenction')}
-        />
+        /> */}
         <Button
           className="mt-3 mb-3"
           size="m"
