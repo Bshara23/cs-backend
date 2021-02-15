@@ -2,6 +2,8 @@ import React, {useEffect, useState, useRef} from 'react';
 import {getUserSpare1, updatePasswordByToken, setUserSpare1} from '../API/API';
 import TemporaryAlert from '../components/TemporaryAlert';
 import {useHistory} from 'react-router-dom';
+import ReCaptcha from '@matt-block/react-recaptcha-v2';
+import {SITE_KEY, SECRET_KEY} from '../data/Consts';
 var sha256 = require ('js-sha256');
 
 export default function ChangePassword({match}) {
@@ -16,6 +18,7 @@ export default function ChangePassword({match}) {
   const [alertType, setAlertType] = useState ('');
   const [alertHeading, setAlertHeading] = useState ('');
   const [alertBody, setAlertBody] = useState ('');
+  const [isVerified, setIsVerified] = useState (false);
 
   useEffect (() => {
     let userId = match.params.id;
@@ -46,7 +49,7 @@ export default function ChangePassword({match}) {
       alertRef.current.showAlert ();
       return;
     }
-    updatePasswordByToken (userId, userToken, sha256(password)).then (res => {
+    updatePasswordByToken (userId, userToken, sha256 (password)).then (res => {
       if (res.data == 1) {
         // password changed
         setAlertType ('success');
@@ -59,7 +62,7 @@ export default function ChangePassword({match}) {
           setTimeout (() => {
             // redirect to log in
             history.push ('/sign-in');
-        }, 1000);
+          }, 1000);
         });
       } else {
         // password didn't change
@@ -71,7 +74,7 @@ export default function ChangePassword({match}) {
     });
   };
   function validateForm () {
-    return password.length > 0 && repeatedPassword.length > 0;
+    return password.length > 0 && repeatedPassword.length > 0 && isVerified;
   }
 
   return (
@@ -107,7 +110,16 @@ export default function ChangePassword({match}) {
                   onChange={e => setRepeatedPassword (e.target.value)}
                 />
               </div>
-
+              <ReCaptcha
+                siteKey={SITE_KEY}
+                theme="light"
+                size="normal"
+                onSuccess={captcha => setIsVerified (true)}
+                onExpire={() =>
+                  console.log ('Verification has expired, re-verify.')}
+                onError={() =>
+                  console.log ('Something went wrong, check your conenction')}
+              />
               <button
                 disabled={!validateForm ()}
                 type="submit"

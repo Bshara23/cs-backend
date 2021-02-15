@@ -2,6 +2,8 @@ import React, {useState, useRef} from 'react';
 import {Player, Controls} from '@lottiefiles/react-lottie-player';
 import TemporaryAlert from '../components/TemporaryAlert';
 import {doesEmailExists, register, sendMail} from '../API/API';
+import ReCaptcha from '@matt-block/react-recaptcha-v2';
+import {SITE_KEY, SECRET_KEY} from '../data/Consts';
 var sha256 = require ('js-sha256');
 
 export default function SignUpPage () {
@@ -15,6 +17,7 @@ export default function SignUpPage () {
   const [alertType, setAlertType] = useState ('');
   const [alertHeading, setAlertHeading] = useState ('');
   const [alertBody, setAlertBody] = useState ('');
+  const [isVerified, setIsVerified] = useState (false);
 
   const handleSubmit = e => {
     e.preventDefault ();
@@ -46,7 +49,6 @@ export default function SignUpPage () {
           sha256 (password),
           promoCode
         ).then (res => {
-
           setAlertType ('success');
           setAlertHeading ('Success');
           setAlertBody ('Registeration has been completed successfully!');
@@ -77,7 +79,7 @@ export default function SignUpPage () {
       email.length > 0 &&
       password.length > 0 &&
       repeatedPassword.length > 0 &&
-      promoCode.length > 0
+      promoCode.length > 0 && isVerified
     );
   }
 
@@ -156,7 +158,16 @@ export default function SignUpPage () {
               onChange={e => setPromoCode (e.target.value)}
             />
           </div>
-
+          <ReCaptcha
+            siteKey={SITE_KEY}
+            theme="light"
+            size="normal"
+            onSuccess={captcha => setIsVerified (true)}
+            onExpire={() =>
+              console.log ('Verification has expired, re-verify.')}
+            onError={() =>
+              console.log ('Something went wrong, check your conenction')}
+          />
           <button
             disabled={!validateForm ()}
             type="submit"

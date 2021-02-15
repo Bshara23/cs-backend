@@ -6,8 +6,9 @@ import {useHistory} from 'react-router-dom';
 import {logIn, sendMail} from '../API/API';
 import TemporaryAlert from '../components/TemporaryAlert';
 import {setCurrentUser} from '../data/Global';
-import Recaptcha from 'react-recaptcha';
+import ReCaptcha from '@matt-block/react-recaptcha-v2';
 import {SITE_KEY, SECRET_KEY} from '../data/Consts';
+
 var sha256 = require ('js-sha256');
 
 export default function LogInPage () {
@@ -30,7 +31,7 @@ export default function LogInPage () {
   );
 
   function validateForm () {
-    return email.length > 0 && password.length > 0;
+    return email.length > 0 && password.length > 0 && isVerified;
   }
 
   const handleSubmit = e => {
@@ -82,15 +83,6 @@ export default function LogInPage () {
     alertRef.current.showAlert ();
   };
 
-  const recaptchaLoaded = () => {
-    console.log ('recaptchaLoaded');
-  };
-
-  const verifyCallback = response => {
-    if (response) {
-      setIsVerified (true);
-    }
-  };
 
   return (
     <div className="Login">
@@ -131,13 +123,16 @@ export default function LogInPage () {
           />
         </Form.Group>
 
-        <Recaptcha
-          sitekey={SITE_KEY}
-          render="explicit"
-          onloadCallback={recaptchaLoaded}
-          verifyCallback={verifyCallback}
+        <ReCaptcha
+          siteKey={SITE_KEY}
+          theme="light"
+          size="normal"
+          onSuccess={captcha =>
+            setIsVerified(true)}
+          onExpire={() => console.log ('Verification has expired, re-verify.')}
+          onError={() =>
+            console.log ('Something went wrong, check your conenction')}
         />
-
         <Button
           className="mt-3 mb-3"
           size="m"
@@ -164,8 +159,12 @@ export default function LogInPage () {
             >
               Resend Activation Link
             </Button>
-          </div>}
 
+            
+          </div>}
+          <p className="forgot-password text-right">
+            <a href="/reset-password">Forgot Password?</a>
+          </p>
       </Form>
     </div>
   );
