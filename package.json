@@ -9,7 +9,7 @@
   },
   "scripts": {
     "start": "node index.js",
-    "heroku-postbuild": "cd cs-frontend && yarn && npm run build"
+    "heroku-postbuild": "cd cs-frontend && npm install && npm run build"
   },
   "license": "MIT",
   "dependencies": {
