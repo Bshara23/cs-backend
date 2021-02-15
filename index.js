@@ -12,9 +12,9 @@ app.use (express.json ());
 
 
 
-// if (process.env.NODE_ENV === "production") {
-//   //app.use(express.static("./client/build"))
-// }
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("./client/build"))
+}
 
 const EMAIL = 'bshara23demo@gmail.com';
 const PASSWORD = 'dW!dbJH<q*5)K@7$';
