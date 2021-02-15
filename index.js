@@ -12,8 +12,13 @@ app.use (express.json ());
 
 
 
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static("./cs-frontend/build"))
+if (process.env.NODE_ENV === 'production') {
+  // Express will serve up production assets
+  // like main.js or main.css
+  app.use(express.static('cs-frontend/build'));
+
+  // Express will serve up the index.html file if
+  // it doesnt recognize the route
   const path = require('path');
   app.get('*', (req, res) => {
     res.sendFile(path.resolve(__dirname, 'cs-frontend', 'build', 'index.html'));
