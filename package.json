@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "heroku-postbuild": "cd cs-frontend && npm install && npm run build"
+    "heroku-postbuild": "cd cs-frontend && yarn && yarn run build"
   },
   "license": "MIT",
   "dependencies": {
