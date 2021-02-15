@@ -1,11 +1,16 @@
-const Pool = require("pg").Pool;
+const Pool = require ('pg').Pool;
 
-const pool = new Pool({
-    user: "postgres",
-    password: "admin",
-    host: "localhost",
-    port: "5432",
-    database: "pcshop",
-});
+const local = {
+  user: 'postgres',
+  password: 'admin',
+  host: 'localhost',
+  port: '5432',
+  database: 'pcshop',
+};
+const remote = {
+  connectionString: process.env.DATABASE_URL,
+};
+
+const pool = new Pool (process.env.NODE_ENV === 'production' ? remote : local);
 
 module.exports = pool;
