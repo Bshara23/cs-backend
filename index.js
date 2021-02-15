@@ -11,12 +11,10 @@ const {v4: uuidv4} = require ('uuid');
 app.use (cors ());
 app.use (express.json ());
 
-if (process.env.NODE_ENV === 'production') {
-  app.use (express.static (path.join (__dirname, 'cs-frontend', 'build')));
-
-  // app.get ('/', function (req, res) {
-  //   res.sendFile (path.join (__dirname, 'cs-frontend', 'build', 'index.html'));
-  // });
+if (process.env.NODE_ENV === "production") {
+  //server static content
+  //npm run build
+  app.use(express.static(path.join(__dirname, "csfrontend/build")));
 }
 
 const EMAIL = 'bshara23demo@gmail.com';
