@@ -4,7 +4,7 @@ const cors = require ('cors');
 const pool = require ('./db_config');
 const nodemailer = require ('nodemailer');
 const crypto = require ('crypto');
-const { v4: uuidv4 } = require('uuid');
+const {v4: uuidv4} = require ('uuid');
 // middleware
 app.use (cors ());
 app.use (express.json ());
@@ -48,17 +48,17 @@ const PASSWORD = 'dW!dbJH<q*5)K@7$';
 // ) {
 //   const algorithm = 'aes-192-cbc';
 //   const password = 'Password used to generate key';
-  
+
 //   // We will first generate the key, as it is dependent on the algorithm.
 //   // In this case for aes192, the key is 24 bytes (192 bits).
 //   // We will use the async `crypto.scrypt()` instead for deciphering.
 //   const key = crypto.scryptSync(password, 'salt', 24);
 //   // The IV is usually passed along with the ciphertext.
 //   const iv = Buffer.alloc(16, 0); // Initialization vector.
-  
+
 //   // Create decipher with key and iv
 //   const decipher = crypto.createDecipheriv(algorithm, key, iv);
-  
+
 //   let decrypted = '';
 //   decipher.on('readable', () => {
 //     while (null !== (chunk = decipher.read())) {
@@ -69,7 +69,7 @@ const PASSWORD = 'dW!dbJH<q*5)K@7$';
 //     console.log(decrypted);
 //     // Prints: some clear text data
 //   });
-  
+
 //   // Encrypted with same algorithm, key and iv.
 //   const encrypted =
 //     'e5f79c5915c02171eec6b212d5520d44480993d7d622a7c4c2da32f6efda0ffa';
@@ -138,9 +138,11 @@ app.post ('/users', async (req, res) => {
 
     // This is okay for such small systems, similar to a uuid
     const id = Math.floor (Math.random () * 10000000 + 1);
+    const spare2 = uuidv4 (); // generate a random spare
+
     const addUser = await pool.query (
-      'INSERT INTO users (id, name, family_name, email, promo_code, password) VALUES($1, $2, $3, $4, $5, $6) RETURNING *',
-      [id, name, family_name, email, promo_code, password]
+      'INSERT INTO users (id, name, family_name, email, promo_code, password, spare2) VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING *',
+      [id, name, family_name, email, promo_code, password, spare2]
     );
     //user_id | user_name
     res.json (addUser.rows[0]);
@@ -148,8 +150,6 @@ app.post ('/users', async (req, res) => {
     console.log (error);
   }
 });
-
-
 
 // get all users
 app.get ('/token', async (req, res) => {
@@ -229,7 +229,7 @@ app.put ('/user_password/:id', async (req, res) => {
 app.put ('/updatePasswordByToken', async (req, res) => {
   try {
     const {id, spare1, newPassword} = req.body;
-    console.log(req.body);
+    console.log (req.body);
     const updateUser = await pool.query (
       'UPDATE users SET password = $3 WHERE id = $1 AND spare1 = $2;',
       [id, spare1, newPassword]
@@ -237,7 +237,6 @@ app.put ('/updatePasswordByToken', async (req, res) => {
     res.json (updateUser.rowCount);
   } catch (error) {
     res.json ('User password was not updated');
-
   }
 });
 
@@ -254,12 +253,38 @@ app.put ('/spare1', async (req, res) => {
     console.log (error);
   }
 });
-
+// update user's spare2
+app.put ('/spare2', async (req, res) => {
+  try {
+    const {id, spare2} = req.body;
+    console.log (req.body);
+    const updateUser = await pool.query (
+      'UPDATE users SET spare2 = $2 WHERE id = $1;',
+      [id, spare2]
+    );
+    res.json (updateUser.rowCount);
+  } catch (error) {
+    console.log (error);
+  }
+});
+// get user's spare2
+app.get ('/spare2/:id', async (req, res) => {
+  try {
+    const {id} = req.params;
+    const getUser = await pool.query (
+      'SELECT spare2 FROM users WHERE id = $1;',
+      [id]
+    );
+    res.json (getUser.rows[0]);
+  } catch (error) {
+    console.log (error);
+  }
+});
 // update user's spare1 by email
 app.put ('/spare1email', async (req, res) => {
   try {
     const {email} = req.body;
-    const spare1 = uuidv4(); // generate a random spare
+    const spare1 = uuidv4 (); // generate a random spare
     const updateUser = await pool.query (
       'UPDATE users SET spare1 = $2 WHERE email = $1;',
       [email, spare1]
