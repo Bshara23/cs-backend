@@ -4,7 +4,7 @@ const cors = require ('cors');
 const pool = require ('./db_config');
 const nodemailer = require ('nodemailer');
 const crypto = require ('crypto');
-
+const { v4: uuidv4 } = require('uuid');
 // middleware
 app.use (cors ());
 app.use (express.json ());
@@ -255,6 +255,37 @@ app.put ('/spare1', async (req, res) => {
   }
 });
 
+// update user's spare1 by email
+app.put ('/spare1email', async (req, res) => {
+  try {
+    const {email} = req.body;
+    const spare1 = uuidv4(); // generate a random spare
+    const updateUser = await pool.query (
+      'UPDATE users SET spare1 = $2 WHERE email = $1;',
+      [email, spare1]
+    );
+    const updateUser2 = await pool.query (
+      'SELECT spare1, id FROM users WHERE email = $1;',
+      [email]
+    );
+    res.json (updateUser2.rows[0]);
+  } catch (error) {
+    console.log (error);
+  }
+});
+// get user's spare1 by email
+app.get ('/spare1email/:email', async (req, res) => {
+  try {
+    const {email} = req.params;
+    const updateUser = await pool.query (
+      'SELECT spare1, id FROM users WHERE email = $1;',
+      [email]
+    );
+    res.json (updateUser.rows[0]);
+  } catch (error) {
+    console.log (error);
+  }
+});
 // update user's spare2
 app.put ('/user_spare2/:id', async (req, res) => {
   try {
