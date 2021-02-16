@@ -59,7 +59,7 @@ export default function SignUpPage () {
           const userId = res.data.id;
           const token = res.data.spare2;
 
-          const url = `http://localhost:3000/a/${userId}/${token}`;
+          const url = `http://csclientserverapp.herokuapp.com/a/${userId}/${token}`;
           const to = email;
           const subject = 'Activation Email';
           const text = `Click on this link to activate your account: ${url}`;
