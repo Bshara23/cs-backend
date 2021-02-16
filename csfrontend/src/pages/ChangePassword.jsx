@@ -2,7 +2,7 @@ import React, {useEffect, useState, useRef} from 'react';
 import {getUserSpare1, updatePasswordByToken, setUserSpare1} from '../API/API';
 import TemporaryAlert from '../components/TemporaryAlert';
 import {useHistory} from 'react-router-dom';
-import ReCaptcha from '@matt-block/react-recaptcha-v2';
+// import ReCaptcha from '@matt-block/react-recaptcha-v2';
 import {SITE_KEY, SECRET_KEY} from '../data/Consts';
 var sha256 = require ('js-sha256');
 
@@ -110,7 +110,7 @@ export default function ChangePassword({match}) {
                   onChange={e => setRepeatedPassword (e.target.value)}
                 />
               </div>
-              <ReCaptcha
+              {/* <ReCaptcha
                 siteKey={SITE_KEY}
                 theme="light"
                 size="normal"
@@ -119,7 +119,7 @@ export default function ChangePassword({match}) {
                   console.log ('Verification has expired, re-verify.')}
                 onError={() =>
                   console.log ('Something went wrong, check your conenction')}
-              />
+              /> */}
               <button
                 disabled={!validateForm ()}
                 type="submit"

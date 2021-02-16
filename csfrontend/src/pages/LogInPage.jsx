@@ -6,7 +6,7 @@ import {useHistory} from 'react-router-dom';
 import {logIn, sendMail} from '../API/API';
 import TemporaryAlert from '../components/TemporaryAlert';
 import {setCurrentUser} from '../data/Global';
-import ReCaptcha from '@matt-block/react-recaptcha-v2';
+// import ReCaptcha from '@matt-block/react-recaptcha-v2';
 import {SITE_KEY, SECRET_KEY} from '../data/Consts';
 
 var sha256 = require ('js-sha256');
