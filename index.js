@@ -1,19 +1,18 @@
 const express = require ('express');
 const app = express ();
+
 const cors = require ('cors');
 const pool = require ('./db_config');
 const nodemailer = require ('nodemailer');
 const path = require ('path');
 
-const crypto = require ('crypto');
 const {v4: uuidv4} = require ('uuid');
 // middleware
 app.use (cors ());
 app.use (express.json ());
 
 if (process.env.NODE_ENV === "production") {
-  //server static content
-  //npm run build
+ 
   app.use(express.static(path.join(__dirname, "csfrontend/build")));
 }
 
@@ -355,3 +354,5 @@ const PORT = process.env.PORT || 5000;
 app.listen (PORT, () => {
   console.log (`Server has started on port ${PORT}`);
 });
+
+

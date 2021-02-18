@@ -15,7 +15,6 @@ const remote = {
   },
 };
 
-console.log('is production ?', process.env.NODE_ENV === 'production');
 
 const pool = new Pool (process.env.NODE_ENV === 'production' ? remote : local);
 

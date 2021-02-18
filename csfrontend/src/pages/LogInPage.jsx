@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react';
-import {Player, Controls} from '@lottiefiles/react-lottie-player';
+import {Player} from '@lottiefiles/react-lottie-player';
 import {Form, Button} from 'react-bootstrap';
 import {useDispatch} from 'react-redux';
 import {useHistory} from 'react-router-dom';
@@ -7,13 +7,15 @@ import {logIn, sendMail} from '../API/API';
 import TemporaryAlert from '../components/TemporaryAlert';
 import {setCurrentUser} from '../data/Global';
 import ReCaptcha from '@matt-block/react-recaptcha-v2';
-import {SITE_KEY, SECRET_KEY} from '../data/Consts';
+import {SITE_KEY} from '../data/Consts';
+import {useCookies} from 'react-cookie';
 
 var sha256 = require ('js-sha256');
 
 export default function LogInPage () {
   const history = useHistory ();
   const dispatch = useDispatch ();
+  const [cookies, setCookie] = useCookies (['user']);
 
   const alertRef = useRef ();
   const [alertHeading, setAlertHeading] = useState ('');
@@ -22,6 +24,7 @@ export default function LogInPage () {
 
   const [id, setId] = useState (-1);
   const [spare2, setSpare2] = useState (-1);
+  const [rememberMe, setRememberMe] = useState (false);
 
   const [isVerified, setIsVerified] = useState (false);
   const [email, setemail] = useState ('');
@@ -29,6 +32,25 @@ export default function LogInPage () {
   const [allowSendActivationLink, setAllowSendActivationLink] = useState (
     false
   );
+
+  useEffect (() => {
+    console.log ('cookies:', cookies.user !== undefined);
+    // auto login if user has been saved by remember me
+    if (cookies.user !== undefined) {
+      const email = cookies.user.email;
+      const password = cookies.user.password;
+      logIn (email, sha256 (password)).then (res => {
+        if (res.data.length != 0) {
+          setId (res.data.id);
+          setSpare2 (res.data.spare2);
+          if (res.data.spare2 === 'Activated') {
+            history.push ('/dashboard');
+            dispatch (setCurrentUser (res.data));
+          }
+        }
+      });
+    }
+  }, []);
 
   function validateForm () {
     return email.length > 0 && password.length > 0 && isVerified;
@@ -42,7 +64,9 @@ export default function LogInPage () {
         setId (res.data.id);
         setSpare2 (res.data.spare2);
         if (res.data.spare2 === 'Activated') {
-          console.log ('log in');
+          if (rememberMe) {
+            setCookie ('user', {email, password});
+          }
           history.push ('/dashboard');
           dispatch (setCurrentUser (res.data));
         } else if (res.data.id != null) {
@@ -63,12 +87,6 @@ export default function LogInPage () {
     });
   };
 
-  useEffect (() => {
-    var full = window.location.protocol+'//'+window.location.hostname+(window.location.port ? ':'+window.location.port: '');
-
-    console.log ("loc:", full);
-  }, []);
-
   const onSignUpClick = () => {
     history.push ('/sign-up');
   };
@@ -77,24 +95,22 @@ export default function LogInPage () {
     const userId = id;
     const token = spare2;
 
-    // let url = `http://csclientserverapp.herokuapp.com/a/${userId}/${token}`;
+    const full =
+      window.location.protocol +
+      '//' +
+      window.location.hostname +
+      (window.location.port ? ':' + window.location.port : '');
+    const url = `${full}/a/${userId}/${token}`;
 
-    // if(process.env.NODE_ENV === 'production'){
-    //   url = `http://csclientserverapp.herokuapp.com/a/${userId}/${token}`;
-    // }
-    // if(process.env.NODE_ENV === 'development'){
-    //   url = `http://csclientserverapp.herokuapp.com/a/${userId}/${token}`;
-    // }
-
-    // const to = email;
-    // const subject = 'Activation Email';
-    // const text = `Click on this link to activate your account: ${url}`;
-    // const onSuccess = e => {};
-    // sendMail (to, subject, text, onSuccess);
-    // setAlertType ('success');
-    // setAlertHeading ('Success');
-    // setAlertBody ('Check your email for an activation link');
-    // alertRef.current.showAlert ();
+    const to = email;
+    const subject = 'Activation Email';
+    const text = `Click on this link to activate your account: ${url}`;
+    const onSuccess = e => {};
+    sendMail (to, subject, text, onSuccess);
+    setAlertType ('success');
+    setAlertHeading ('Success');
+    setAlertBody ('Check your email for an activation link');
+    alertRef.current.showAlert ();
   };
 
   return (
@@ -127,6 +143,7 @@ export default function LogInPage () {
           />
 
         </Form.Group>
+
         <Form.Group size="lg" controlId="password">
           <Form.Control
             type="password"
@@ -135,7 +152,14 @@ export default function LogInPage () {
             onChange={e => setPassword (e.target.value)}
           />
         </Form.Group>
-
+        <Form.Group controlId="formBasicCheckbox">
+          <Form.Check
+            value={rememberMe}
+            onChange={e => setRememberMe (e.target.value)}
+            type="checkbox"
+            label="Check me out"
+          />
+        </Form.Group>
         <ReCaptcha
           siteKey={SITE_KEY}
           theme="light"
