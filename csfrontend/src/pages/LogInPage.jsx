@@ -34,9 +34,8 @@ export default function LogInPage () {
   );
 
   useEffect (() => {
-    console.log ('cookies:', cookies.user !== undefined);
     // auto login if user has been saved by remember me
-    if (cookies.user !== undefined) {
+    if (cookies.user2 !== undefined) {
       const email = cookies.user.email;
       const password = cookies.user.password;
       logIn (email, sha256 (password)).then (res => {

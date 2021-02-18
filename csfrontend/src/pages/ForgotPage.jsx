@@ -6,7 +6,8 @@ import {
   sendMail,
   generateUserSpare1ByEmail,
 } from '../API/API';
-
+import ReCaptcha from '@matt-block/react-recaptcha-v2';
+import {SITE_KEY} from '../data/Consts';
 
 export default function ForgotPage () {
   const [email, setEmail] = useState ('');
@@ -14,6 +15,7 @@ export default function ForgotPage () {
   const [alertType, setAlertType] = useState ('');
   const [alertHeading, setAlertHeading] = useState ('');
   const [alertBody, setAlertBody] = useState ('');
+  const [isVerified, setIsVerified] = useState (false);
 
   const handleSubmit = e => {
     e.preventDefault ();
@@ -23,15 +25,17 @@ export default function ForgotPage () {
         const userId = res.data.id;
         const newToken = res.data.spare1;
 
-        const full = window.location.protocol+'//'+window.location.hostname+(window.location.port ? ':'+window.location.port: '');
-        const url = `${full}/a/${userId}/${newToken}`;
+        const full =
+          window.location.protocol +
+          '//' +
+          window.location.hostname +
+          (window.location.port ? ':' + window.location.port : '');
+        const url = `${full}/ch/${userId}/${newToken}`;
 
         const to = email;
         const subject = 'Recovery Email';
         const text = `Click on this link to reset your password: ${url}`;
-        const onSuccess = e => {
-         
-        };
+        const onSuccess = e => {};
         sendMail (to, subject, text, onSuccess);
         setAlertType ('success');
         setAlertHeading ('Success');
@@ -42,11 +46,11 @@ export default function ForgotPage () {
         setAlertType ('success');
         setAlertHeading ('Success');
         setAlertBody ('Check your email for a reset link');
-    }
+      }
     });
   };
   function validateForm () {
-    return email.length > 0;
+    return email.length > 0 && isVerified;
   }
 
   const alertRef = useRef ();
@@ -80,7 +84,16 @@ export default function ForgotPage () {
               onChange={e => setEmail (e.target.value)}
             />
           </div>
-
+          <ReCaptcha
+            siteKey={SITE_KEY}
+            theme="light"
+            size="normal"
+            onSuccess={captcha => setIsVerified (true)}
+            onExpire={() =>
+              console.log ('Verification has expired, re-verify.')}
+            onError={() =>
+              console.log ('Something went wrong, check your conenction')}
+          />
           <button
             disabled={!validateForm ()}
             type="submit"
