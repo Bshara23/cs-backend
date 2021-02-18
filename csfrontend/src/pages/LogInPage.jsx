@@ -9,6 +9,7 @@ import {setCurrentUser} from '../data/Global';
 import ReCaptcha from '@matt-block/react-recaptcha-v2';
 import {SITE_KEY} from '../data/Consts';
 import {useCookies} from 'react-cookie';
+import SmartPasswordInput from '../components/SmartPasswordInput';
 
 var sha256 = require ('js-sha256');
 
@@ -29,6 +30,7 @@ export default function LogInPage () {
   const [isVerified, setIsVerified] = useState (false);
   const [email, setemail] = useState ('');
   const [password, setPassword] = useState ('');
+  const [passwordError, setPasswordError] = useState(undefined)
   const [allowSendActivationLink, setAllowSendActivationLink] = useState (
     false
   );
@@ -52,7 +54,7 @@ export default function LogInPage () {
   }, []);
 
   function validateForm () {
-    return email.length > 0 && password.length > 0 && isVerified;
+    return email.length > 0 && password.length > 0 && isVerified && passwordError === undefined;
   }
 
   const handleSubmit = e => {
@@ -144,11 +146,12 @@ export default function LogInPage () {
         </Form.Group>
 
         <Form.Group size="lg" controlId="password">
-          <Form.Control
-            type="password"
-            value={password}
-            placeholder="Password"
-            onChange={e => setPassword (e.target.value)}
+
+          <SmartPasswordInput
+            onValChange={e => setPassword (e)}
+            onErrorChange={err => {
+              setPasswordError (err);
+            }}
           />
         </Form.Group>
         <Form.Group controlId="formBasicCheckbox">
@@ -159,6 +162,7 @@ export default function LogInPage () {
             label="Check me out"
           />
         </Form.Group>
+
         <ReCaptcha
           siteKey={SITE_KEY}
           theme="light"

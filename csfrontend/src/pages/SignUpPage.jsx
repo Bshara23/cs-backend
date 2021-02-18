@@ -4,6 +4,8 @@ import TemporaryAlert from '../components/TemporaryAlert';
 import {doesEmailExists, register, sendMail} from '../API/API';
 import ReCaptcha from '@matt-block/react-recaptcha-v2';
 import {SITE_KEY, SECRET_KEY} from '../data/Consts';
+import SmartPasswordInput from '../components/SmartPasswordInput';
+
 var sha256 = require ('js-sha256');
 
 export default function SignUpPage () {
@@ -18,6 +20,7 @@ export default function SignUpPage () {
   const [alertHeading, setAlertHeading] = useState ('');
   const [alertBody, setAlertBody] = useState ('');
   const [isVerified, setIsVerified] = useState (false);
+  const [passwordError, setPasswordError] = useState (undefined);
 
   const handleSubmit = e => {
     e.preventDefault ();
@@ -59,7 +62,11 @@ export default function SignUpPage () {
           const userId = res.data.id;
           const token = res.data.spare2;
 
-          const full = window.location.protocol+'//'+window.location.hostname+(window.location.port ? ':'+window.location.port: '');
+          const full =
+            window.location.protocol +
+            '//' +
+            window.location.hostname +
+            (window.location.port ? ':' + window.location.port : '');
           const url = `${full}/a/${userId}/${token}`;
 
           const to = email;
@@ -81,7 +88,9 @@ export default function SignUpPage () {
       email.length > 0 &&
       password.length > 0 &&
       repeatedPassword.length > 0 &&
-      promoCode.length > 0 && isVerified
+      promoCode.length > 0 &&
+      isVerified &&
+      passwordError === undefined
     );
   }
 
@@ -136,11 +145,11 @@ export default function SignUpPage () {
           </div>
 
           <div className="form-group">
-            <input
-              type="password"
-              className="form-control"
-              placeholder="Enter password"
-              onChange={e => setPassword (e.target.value)}
+            <SmartPasswordInput
+              onValChange={e => setPassword (e)}
+              onErrorChange={err => {
+                setPasswordError (err);
+              }}
             />
           </div>
           <div className="form-group">

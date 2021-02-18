@@ -4,6 +4,8 @@ import TemporaryAlert from '../components/TemporaryAlert';
 import {useHistory} from 'react-router-dom';
 import ReCaptcha from '@matt-block/react-recaptcha-v2';
 import {SITE_KEY, SECRET_KEY} from '../data/Consts';
+import SmartPasswordInput from '../components/SmartPasswordInput';
+
 var sha256 = require ('js-sha256');
 
 export default function ChangePassword({match}) {
@@ -19,6 +21,7 @@ export default function ChangePassword({match}) {
   const [alertHeading, setAlertHeading] = useState ('');
   const [alertBody, setAlertBody] = useState ('');
   const [isVerified, setIsVerified] = useState (false);
+  const [passwordError, setPasswordError] = useState (undefined);
 
   useEffect (() => {
     let userId = match.params.id;
@@ -74,7 +77,7 @@ export default function ChangePassword({match}) {
     });
   };
   function validateForm () {
-    return password.length > 0 && repeatedPassword.length > 0 && isVerified;
+    return password.length > 0 && repeatedPassword.length > 0 && isVerified && passwordError === undefined;
   }
 
   return (
@@ -95,11 +98,11 @@ export default function ChangePassword({match}) {
               <h3 className="mt-5 mb-5">Change Password</h3>
 
               <div className="form-group">
-                <input
-                  type="password"
-                  className="form-control"
-                  placeholder="Enter password"
-                  onChange={e => setPassword (e.target.value)}
+                <SmartPasswordInput
+                  onValChange={e => setPassword (e)}
+                  onErrorChange={err => {
+                    setPasswordError (err);
+                  }}
                 />
               </div>
               <div className="form-group">
