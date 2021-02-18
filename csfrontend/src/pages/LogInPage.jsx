@@ -63,6 +63,16 @@ export default function LogInPage () {
     });
   };
 
+
+  useEffect(() => {
+    console.log('is production ?', process.env.NODE_ENV === 'production');
+
+    console.log(process.env);
+    return () => {
+      
+    }
+  }, [])
+
   const onSignUpClick = () => {
     history.push ('/sign-up');
   };
@@ -71,16 +81,19 @@ export default function LogInPage () {
     const userId = id;
     const token = spare2;
 
-    const url = `http://csclientserverapp.herokuapp.com/a/${userId}/${token}`;
-    const to = email;
-    const subject = 'Activation Email';
-    const text = `Click on this link to activate your account: ${url}`;
-    const onSuccess = e => {};
-    sendMail (to, subject, text, onSuccess);
-    setAlertType ('success');
-    setAlertHeading ('Success');
-    setAlertBody ('Check your email for an activation link');
-    alertRef.current.showAlert ();
+    console.log('is production ?', process.env.NODE_ENV === 'production');
+
+
+    // const url = `http://csclientserverapp.herokuapp.com/a/${userId}/${token}`;
+    // const to = email;
+    // const subject = 'Activation Email';
+    // const text = `Click on this link to activate your account: ${url}`;
+    // const onSuccess = e => {};
+    // sendMail (to, subject, text, onSuccess);
+    // setAlertType ('success');
+    // setAlertHeading ('Success');
+    // setAlertBody ('Check your email for an activation link');
+    // alertRef.current.showAlert ();
   };
 
 

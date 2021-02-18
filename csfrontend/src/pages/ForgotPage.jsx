@@ -7,7 +7,6 @@ import {
   generateUserSpare1ByEmail,
 } from '../API/API';
 
-var sha256 = require ('js-sha256');
 
 export default function ForgotPage () {
   const [email, setEmail] = useState ('');

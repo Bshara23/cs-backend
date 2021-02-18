@@ -6,7 +6,7 @@ const local = {
   host: 'localhost',
   port: '5432',
   database: 'pcshop',
-  ssl: true,
+  //ssl: true,
 };
 const remote = {
   connectionString: process.env.DATABASE_URL,
@@ -14,6 +14,8 @@ const remote = {
     rejectUnauthorized: false,
   },
 };
+
+console.log('is production ?', process.env.NODE_ENV === 'production');
 
 const pool = new Pool (process.env.NODE_ENV === 'production' ? remote : local);
 
