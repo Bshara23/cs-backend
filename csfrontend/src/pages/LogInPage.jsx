@@ -63,15 +63,11 @@ export default function LogInPage () {
     });
   };
 
+  useEffect (() => {
+    var full = window.location.protocol+'//'+window.location.hostname+(window.location.port ? ':'+window.location.port: '');
 
-  useEffect(() => {
-    console.log('is production ?', process.env.NODE_ENV === 'production');
-
-    console.log(process.env);
-    return () => {
-      
-    }
-  }, [])
+    console.log ("loc:", full);
+  }, []);
 
   const onSignUpClick = () => {
     history.push ('/sign-up');
@@ -81,10 +77,15 @@ export default function LogInPage () {
     const userId = id;
     const token = spare2;
 
-    console.log('is production ?', process.env.NODE_ENV === 'production');
+    // let url = `http://csclientserverapp.herokuapp.com/a/${userId}/${token}`;
 
+    // if(process.env.NODE_ENV === 'production'){
+    //   url = `http://csclientserverapp.herokuapp.com/a/${userId}/${token}`;
+    // }
+    // if(process.env.NODE_ENV === 'development'){
+    //   url = `http://csclientserverapp.herokuapp.com/a/${userId}/${token}`;
+    // }
 
-    // const url = `http://csclientserverapp.herokuapp.com/a/${userId}/${token}`;
     // const to = email;
     // const subject = 'Activation Email';
     // const text = `Click on this link to activate your account: ${url}`;
@@ -95,7 +96,6 @@ export default function LogInPage () {
     // setAlertBody ('Check your email for an activation link');
     // alertRef.current.showAlert ();
   };
-
 
   return (
     <div className="Login">
@@ -140,8 +140,7 @@ export default function LogInPage () {
           siteKey={SITE_KEY}
           theme="light"
           size="normal"
-          onSuccess={captcha =>
-            setIsVerified(true)}
+          onSuccess={captcha => setIsVerified (true)}
           onExpire={() => console.log ('Verification has expired, re-verify.')}
           onError={() =>
             console.log ('Something went wrong, check your conenction')}
@@ -173,11 +172,10 @@ export default function LogInPage () {
               Resend Activation Link
             </Button>
 
-            
           </div>}
-          <p className="forgot-password text-right">
-            <a href="/reset-password">Forgot Password?</a>
-          </p>
+        <p className="forgot-password text-right">
+          <a href="/reset-password">Forgot Password?</a>
+        </p>
       </Form>
     </div>
   );
