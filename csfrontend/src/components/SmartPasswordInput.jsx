@@ -34,10 +34,10 @@ const PasswordInput = ({onValChange, onErrorChange, className = ''}) => {
               label="password"
               name="password"
               type="password"
-              placeholder="password"
+              placeholder="Password"
               onValChange={onValChange}
               onErrorChange={onErrorChange}
-              className={className}
+              className={className + ' mb-3'}
             />
           </Form>
         );
@@ -53,18 +53,20 @@ const SignInSchema = Yup.object ().shape ({
       /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
       'Must Contain at least 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character'
     ),
+  passwordConfirmation: Yup.string ().oneOf (
+    [Yup.ref ('password'), null],
+    'Passwords must match'
+  ),
 });
 
 const CustomComponent2 = props => {
   const [field, meta] = useField (props);
   useEffect (
     () => {
-      if (meta !== undefined)
+      if (meta !== undefined) {
         if (props.onValChange !== undefined) {
           props.onValChange (meta.value);
         }
-      if (props.onErrorChange !== undefined) {
-        props.onErrorChange (meta.error);
       }
     },
     [meta]

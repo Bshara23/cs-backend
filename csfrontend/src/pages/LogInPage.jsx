@@ -10,7 +10,8 @@ import ReCaptcha from '@matt-block/react-recaptcha-v2';
 import {SITE_KEY} from '../data/Consts';
 import {useCookies} from 'react-cookie';
 import SmartPasswordInput from '../components/SmartPasswordInput';
-
+import * as Yup from 'yup';
+import {useFormik} from 'formik';
 var sha256 = require ('js-sha256');
 
 export default function LogInPage () {
@@ -28,16 +29,14 @@ export default function LogInPage () {
   const [rememberMe, setRememberMe] = useState (false);
 
   const [isVerified, setIsVerified] = useState (false);
-  const [email, setemail] = useState ('');
-  const [password, setPassword] = useState ('');
-  const [passwordError, setPasswordError] = useState(undefined)
+
   const [allowSendActivationLink, setAllowSendActivationLink] = useState (
     false
   );
 
   useEffect (() => {
     // auto login if user has been saved by remember me
-    if (cookies.user2 !== undefined) {
+    if (cookies.user !== undefined) {
       const email = cookies.user.email;
       const password = cookies.user.password;
       logIn (email, sha256 (password)).then (res => {
@@ -53,12 +52,7 @@ export default function LogInPage () {
     }
   }, []);
 
-  function validateForm () {
-    return email.length > 0 && password.length > 0 && isVerified && passwordError === undefined;
-  }
-
-  const handleSubmit = e => {
-    e.preventDefault ();
+  const handleSubmit = ({email, password}) => {
     logIn (email, sha256 (password)).then (res => {
       if (res.data.length != 0) {
         console.log ('user:', res.data);
@@ -92,7 +86,7 @@ export default function LogInPage () {
     history.push ('/sign-up');
   };
 
-  const resendActivationLink = () => {
+  const resendActivationLink = email => {
     const userId = id;
     const token = spare2;
 
@@ -114,9 +108,24 @@ export default function LogInPage () {
     alertRef.current.showAlert ();
   };
 
-  return (
-    <div className="Login">
+  const formik = useFormik ({
+    initialValues: {
+      email: '',
+      password: '',
+    },
+    validationSchema: Yup.object ({
+      email: Yup.string ()
+        .email ('Invalid email address')
+        .required ('Required'),
 
+      password: Yup.string ().required ('Password is required'),
+    }),
+    onSubmit: values => {
+      handleSubmit (values);
+    },
+  });
+  return (
+    <form onSubmit={formik.handleSubmit}>
       <Player
         autoplay
         loop
@@ -129,40 +138,47 @@ export default function LogInPage () {
         type={alertType}
         ref={alertRef}
       />
-      <Form
-        className="d-flex flex-column align-items-md-center"
-        onSubmit={handleSubmit}
-      >
-        <h3 className="pt-5 pb-3"> Welcome Back!</h3>
+      <div className=" d-flex flex-column align-items-md-center">
 
-        <Form.Group size="lg" controlId="email">
-          <Form.Control
+        <h2 className="m-5">Sign In</h2>
+        <div className="form-group">
+
+          <input
+            className="form-control m-2"
+            id="email"
+            name="email"
             type="email"
-            placeholder="Enter email"
-            value={email}
-            onChange={e => setemail (e.target.value)}
+            placeholder="Email"
+            {...formik.getFieldProps ('email')}
           />
+          {formik.touched.email && formik.errors.email
+            ? <div className="error ml-2">{formik.errors.email}</div>
+            : null}
+        </div>
 
-        </Form.Group>
+        <div className="form-group">
 
-        <Form.Group size="lg" controlId="password">
-
-          <SmartPasswordInput
-            onValChange={e => setPassword (e)}
-            onErrorChange={err => {
-              setPasswordError (err);
-            }}
+          <input
+            className="form-control m-2"
+            id="password"
+            name="password"
+            type="password"
+            placeholder="Password"
+            {...formik.getFieldProps ('password')}
           />
-        </Form.Group>
-        <Form.Group controlId="formBasicCheckbox">
+          {formik.touched.password && formik.errors.password
+            ? <div className="error ml-2">{formik.errors.password}</div>
+            : null}
+        </div>
+
+        <Form.Group className="m-2" controlId="formBasicCheckbox">
           <Form.Check
             value={rememberMe}
             onChange={e => setRememberMe (e.target.value)}
             type="checkbox"
-            label="Check me out"
+            label="Remember Me"
           />
         </Form.Group>
-
         <ReCaptcha
           siteKey={SITE_KEY}
           theme="light"
@@ -172,17 +188,24 @@ export default function LogInPage () {
           onError={() =>
             console.log ('Something went wrong, check your conenction')}
         />
-        <Button
-          className="mt-3 mb-3"
-          size="m"
-          type="submit"
-          disabled={!validateForm ()}
-        >
-          Login
-        </Button>
-        <Button className="mb-3" size="m" onClick={onSignUpClick}>
-          Sign Up
-        </Button>
+        <div className="form-group">
+
+          <button
+            //disabled={!validateForm ()}
+            type="submit"
+            className="btn btn-primary m-2"
+            disabled={!(formik.isValid && formik.dirty && isVerified)}
+          >
+            Log In
+          </button>
+
+        </div>
+        <div className="form-group">
+          Don't have an account?
+          <a className="mb-3 pointer" size="m" onClick={onSignUpClick}>
+            {' '}Sign Up
+          </a>
+        </div>
 
         {allowSendActivationLink &&
           <div className="d-flex flex-column align-items-md-center m-3">
@@ -192,18 +215,18 @@ export default function LogInPage () {
             </p>
             <Button
               className="mb-3"
-              disabled={email.length == 0}
+              //disabled={email.length == 0}
               size="m"
-              onClick={resendActivationLink}
+              onClick={() => resendActivationLink (formik.values.email)}
             >
               Resend Activation Link
             </Button>
-
           </div>}
         <p className="forgot-password text-right">
           <a href="/reset-password">Forgot Password?</a>
         </p>
-      </Form>
-    </div>
+
+      </div>
+    </form>
   );
 }
