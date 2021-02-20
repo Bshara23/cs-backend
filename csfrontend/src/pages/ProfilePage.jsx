@@ -84,7 +84,6 @@ const ChangePassword = ({oldPassCopy, userId}) => {
     }
 
     // 2. update password
-
     updatePassword (userId, sha256 (password)).then (res => {
       if (res.data == 1) {
         // password changed
