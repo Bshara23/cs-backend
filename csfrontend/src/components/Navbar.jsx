@@ -5,10 +5,11 @@ import {connect, useSelector} from 'react-redux';
 import {useDispatch} from 'react-redux';
 import {currentUser, setCurrentUser} from '../data/Global';
 
-function Navbar2(props) {
+export default function Navbar2(props) {
   const dispatch = useDispatch();
   const user = useSelector(currentUser);
 
+  // TODO
   const onLogOut = () => {
     dispatch(setCurrentUser(null));
   };
@@ -21,12 +22,20 @@ function Navbar2(props) {
         expand="lg"
         className="navbarc myNavBar shadow"
       >
-        <Navbar.Brand id="gradingSystem">Grading System <span className="navbar-username">{user && `${user.fname} ${user.lname}`}</span></Navbar.Brand>
+        <Navbar.Brand id="gradingSystem">Hasob <span className="navbar-username">{user && `${user.name} ${user.family_name}`}</span></Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
+          <Nav className="mr-auto">
+            <Nav.Link href="/phones">Cellphones</Nav.Link>
+            <Nav.Link href="/pcs">PCs</Nav.Link>
+            {/* <Nav.Link href="/tvs">TVs</Nav.Link> */}
+          </Nav>
           <Nav>
-            <Nav.Link eventKey={2} href="/" onClick={onLogOut}>
-              <div>Log Out</div>
+          <Nav.Link href="/about">Info</Nav.Link>
+            <Nav.Link
+              eventKey={2}
+              href="/ContactPage">
+                Log Out
             </Nav.Link>
           </Nav>
         </Navbar.Collapse>
@@ -34,14 +43,3 @@ function Navbar2(props) {
     </>
   );
 }
-const mapStateToProps = (state) => {
-  return {currentCourse: state.currentCourse};
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    dispatch,
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Navbar2);

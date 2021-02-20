@@ -9,9 +9,9 @@ import {setCurrentUser} from '../data/Global';
 import ReCaptcha from '@matt-block/react-recaptcha-v2';
 import {SITE_KEY} from '../data/Consts';
 import {useCookies} from 'react-cookie';
-import SmartPasswordInput from '../components/SmartPasswordInput';
 import * as Yup from 'yup';
 import {useFormik} from 'formik';
+
 var sha256 = require ('js-sha256');
 
 export default function LogInPage () {

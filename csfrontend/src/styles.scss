@@ -22,7 +22,20 @@ body {
   
 
 }
-
+.navbar-username {
+  font-size: medium;
+  color: #0e7bf1;
+  cursor: default;
+}
+.basicImage{
+  height: auto; width: 100%;
+}
+.colorWhite{
+  color: white;
+}
+.cardBody17{
+  background-color: #325e70; color: white;
+}
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
@@ -34,6 +47,10 @@ h1 {
 .error{
   color: rgb(250, 0, 0);
   font-size: small;
+}
+.shrink{
+  white-space: pre-line;
+
 }
 h1,
 .main-content {

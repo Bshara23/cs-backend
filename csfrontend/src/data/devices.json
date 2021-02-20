@@ -1,0 +1,25 @@
+{
+  "devs" : [
+    {
+      "id": "Phones",
+      "icon": "mobile-alt",
+      "text": "Choose from a varied collections of the most advanced phones!",
+      "img": "../data/images/phones.png",
+      "url": "phones"
+    },
+    {
+      "id": "PCs",
+      "icon": "laptop",
+      "text": "The best PCs for gamers, students, and programmers alike!",
+      "img": "../data/images/PC.png",
+      "url": "pcs"
+    },
+    {
+      "id": "TVs",
+      "icon": "tv",
+      "text": "Build your own cinema at home, with this varied collection!",
+      "img": "../data/images/4.png",
+      "url": "tvs"
+    }
+  ]
+}

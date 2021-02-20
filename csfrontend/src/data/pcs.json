@@ -1,0 +1,129 @@
+{
+  "activus" : "PCs",
+  "height" : "100px",
+  "width" : "150px",
+  "devs" : [
+    {
+      "id": "Asus ZenBook 14",
+      "type": "PC",
+      "in_stock": "true",
+      "description": "Best PC for Gaming!",
+      "src": "asus14.jpg",
+      "models": [
+        {
+          "id": "1",
+          "type": "1 TB i7",
+          "text": "1 year warranty",
+          "price": "1200$"
+        },
+        {
+          "id": "2",
+          "type": "512 GB i7",
+          "text": "1 year warranty",
+          "price": "800$"
+        },
+        {
+          "id": "3",
+          "type": "512 GB i5",
+          "text": "1 year warranty",
+          "price": "700$"
+        }
+      ]
+    },
+    {
+      "id": "Asus ZenBook Duo",
+      "type": "Laptop",
+      "in_stock": "false",
+      "description": "Scientists' 1st choice!",
+      "src": "asus15.png",
+      "models": []
+    },
+    {
+      "id": "Lenovo Yoga",
+      "type": "Laptop",
+      "in_stock": "true",
+      "description": "The first in it's class",
+      "src": "lenovo.webp",
+      "models": [
+        {
+          "id": "1",
+          "type": "512 GB i7",
+          "text": "1 year warranty",
+          "price": "1700$"
+        },
+        {
+          "id": "2",
+          "type": "512 GB i5",
+          "text": "1 year warranty",
+          "price": "1300$"
+        }
+      ]
+    },
+    {
+      "id": "Microsoft Laptop Surface",
+      "type": "Laptop",
+      "in_stock": "false",
+      "description": "The most advanced laptop",
+      "src": "mico1.png",
+      "models": []
+    },
+    {
+      "id": "Dell XPS 17",
+      "type": "Laptop",
+      "in_stock": "true",
+      "description": "The first in it's class",
+      "src": "dell15.png",
+      "models": [
+        {
+          "id": "1",
+          "type": "1TB i5",
+          "text": "Life time warranty",
+          "price": "3000$"
+        },
+        {
+          "id": "2",
+          "type": "1TB i7",
+          "text": "Life time warranty",
+          "price": "4500$"
+        },
+        {
+          "id": "3",
+          "type": "1TB i9",
+          "text": "Life time warranty",
+          "price": "5000$"
+        },
+        {
+          "id": "4",
+          "type": "2TB i9",
+          "text": "life time warranty",
+          "price": "6000$"
+        }
+      ]
+    },
+    {
+      "id": "Xiaomi mi pro",
+      "type": "Laptop",
+      "in_stock": "true",
+      "description": "The most advanced laptop",
+      "src": "xiaomi1.png",
+      "models": [{
+        "id": "1",
+        "type": "1 TB i7",
+        "text": "1 year warranty",
+        "price": "1150$"
+      },
+      {
+        "id": "2",
+        "type": "512 GB i7",
+        "text": "1 year warranty",
+        "price": "900$"
+      },
+      {
+        "id": "3",
+        "type": "512 GB i5",
+        "text": "1 year warranty",
+        "price": "960$"
+      }]
+    }
+  ]
+}

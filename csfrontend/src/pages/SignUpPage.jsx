@@ -101,7 +101,7 @@ export default function SignUpPage () {
         .required ('Password is required')
         .matches (
           /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-          'Must Contain at least 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character'
+          'Must Contain at least 8 Characters\n One Uppercase, One Lowercase\n One Number and one special\n case Character'
         ),
 
       pass2: Yup.string ()
@@ -187,11 +187,14 @@ export default function SignUpPage () {
             placeholder="Password"
             {...formik.getFieldProps ('password')}
           />
-          {formik.touched.password && formik.errors.password
-            ? <div className="error ml-2">{formik.errors.password}</div>
+        
+        </div>
+        <div className="shrink">
+        {formik.touched.password && formik.errors.password
+            ? <p className="error ml-2">{formik.errors.password}</p>
             : null}
         </div>
-
+        
         <div className="form-group">
 
           <input

@@ -1,0 +1,149 @@
+{
+  "activus" : "Phones",
+  "height" : "150px",
+  "width" : "75px",
+  "devs" : [
+    {
+      "id": "iPhone X",
+      "type": "Cell Phone",
+      "in_stock": "true",
+      "description": "Best smartphone ever",
+      "src": "iphonex.png",
+      "models": [
+        {
+          "id": "1",
+          "type": "32 GB",
+          "text": "2 month of warranty",
+          "price": "200$"
+        },
+        {
+          "id": "2",
+          "type": "128 GB",
+          "text": "4 month warranty",
+          "price": "500$"
+        },
+        {
+          "id": "3",
+          "type": "512 GB",
+          "text": "life time warranty",
+          "price": "700$"
+        }
+      ]
+    },
+    {
+      "id": "iPhone 7",
+      "type": "Cell Phone",
+      "in_stock": "true",
+      "description": "The right phone for you",
+      "src": "iphone7.png",
+      "models": [
+        {
+          "id": "1",
+          "type": "32 GB",
+          "text": "1 month of warranty",
+          "price": "150$"
+        },
+        {
+          "id": "2",
+          "type": "128 GB",
+          "text": "3 month warranty",
+          "price": "200$"
+        },
+        {
+          "id": "3",
+          "type": "256 GB",
+          "text": "4 month warranty",
+          "price": "400$"
+        }
+      ]
+    },
+    {
+      "id": "Samsung S8",
+      "type": "Cell Phone",
+      "in_stock": "true",
+      "description": "The first in it's class",
+      "src": "s8.png",
+      "models": [
+        {
+          "id": "1",
+          "type": "256 GB",
+          "text": "life time warranty",
+          "price": "600$"
+        },
+        {
+          "id": "2",
+          "type": "512 GB",
+          "text": "life time warranty",
+          "price": "850$"
+        }
+      ]
+    },
+    {
+      "id": "Huwawei P10",
+      "type": "Cell Phone",
+      "in_stock": "false",
+      "description": "The most advanced phone",
+      "src": "p10.png",
+      "models": []
+    },
+    {
+      "id": "samsung a51",
+      "type": "Cell Phone",
+      "in_stock": "true",
+      "description": "The first in it's class",
+      "src": "a51.png",
+      "models": [
+        {
+          "id": "1",
+          "type": "64 GB",
+          "text": "life time warranty",
+          "price": "400$"
+        },
+        {
+          "id": "2",
+          "type": "128 GB",
+          "text": "life time warranty",
+          "price": "450$"
+        },
+        {
+          "id": "3",
+          "type": "white 512 GB",
+          "text": "life time warranty",
+          "price": "500$"
+        },
+        {
+          "id": "4",
+          "type": "black 512 GB",
+          "text": "life time warranty",
+          "price": "550$"
+        },
+        {
+          "id": "5",
+          "type": "space-grey 512 GB",
+          "text": "life time warranty",
+          "price": "600$"
+        },
+        {
+          "id": "6",
+          "type": "green 512 GB",
+          "text": "life time warranty",
+          "price": "650$"
+        },
+        {
+          "id": "7",
+          "type": "blue 512 GB",
+          "text": "life time warranty",
+          "price": "700$"
+        }
+      ]
+    },
+    {
+      "id": "LG G8",
+      "type": "Cell Phone",
+      "in_stock": "false",
+      "description": "The most advanced phone",
+      "src": "lgl8.png",
+      "models": []
+    }
+  ]
+}
