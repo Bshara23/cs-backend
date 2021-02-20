@@ -212,6 +212,37 @@ app.get ('/spare2/:id', async (req, res) => {
     console.log (error);
   }
 });
+
+
+// update user's spare3
+app.put ('/spare3', async (req, res) => {
+  try {
+    const spare3 = Math.floor (Math.random () * 100000 + 1);
+    const {id} = req.body;
+    const updateUser = await pool.query (
+      'UPDATE users SET spare3 = $2 WHERE id = $1;',
+      [id, spare3]
+    );
+    res.json (spare3);
+  } catch (error) {
+    console.log (error);
+  }
+});
+// get user's spare3
+app.get ('/spare3/:id', async (req, res) => {
+  try {
+    const {id} = req.params;
+    const getUser = await pool.query (
+      'SELECT spare3 FROM users WHERE id = $1;',
+      [id]
+    );
+    res.json (getUser.rows[0]);
+  } catch (error) {
+    console.log (error);
+  }
+});
+
+
 // update user's spare1 by email
 app.put ('/spare1email', async (req, res) => {
   try {
@@ -287,6 +318,21 @@ app.put ('/user_spare4/:id', async (req, res) => {
     console.log (error);
   }
 });
+
+// update user's email
+app.put ('/updateEmail', async (req, res) => {
+  try {
+    const {id, email} = req.body;
+    const updateUser = await pool.query (
+      'UPDATE users SET email = $2 WHERE id = $1;',
+      [id, email]
+    );
+    res.json ('User email updated');
+  } catch (error) {
+    console.log (error);
+  }
+});
+
 
 // delete user
 app.delete ('/users/:id', async (req, res) => {

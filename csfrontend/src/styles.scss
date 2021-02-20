@@ -10,15 +10,17 @@ body {
   letter-spacing: 1px;
   //padding: 10px;
   //background-image: url("aa.jpg");
-background-color: #94a0c718;
+  background-color: #94a0c718;
   height: 100%;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
     "Droid Sans", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+.dd123123d {
+  color: rgb(0, 137, 250);
+}
 #bg {
-
   grid-column: 1;
   grid-row: 1;
   /* Full height */
@@ -33,12 +35,11 @@ background-color: #94a0c718;
 #root {
   background-color: white;
   /* Full height */
-  
+
   margin-left: 10%;
   margin-right: 10%;
 
   border-radius: 5px;
-
 }
 .navbar-username {
   font-size: medium;
@@ -62,6 +63,10 @@ code {
 h1 {
   text-align: center;
   font-size: 30px;
+}
+.successm {
+  color: #0e7bf1;
+  font-size: small;
 }
 .error {
   color: rgb(250, 0, 0);

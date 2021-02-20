@@ -8,20 +8,94 @@ import ReCaptcha from '@matt-block/react-recaptcha-v2';
 import {SITE_KEY} from '../data/Consts';
 import * as Yup from 'yup';
 import {useFormik} from 'formik';
-import {updatePassword} from '../API/API';
+import {
+  doesEmailExists,
+  updatePassword,
+  updateEmail,
+  sendMail,
+  setUserSpare3,
+} from '../API/API';
+import Modal from 'react-bootstrap/Modal';
+import {Button} from 'react-bootstrap';
+const {v4: uuidv4} = require ('uuid');
+
 var sha256 = require ('js-sha256');
+
 export default function ProfilePage () {
   const user = useSelector (currentUser);
-
+  const [show, setShow] = useState (false);
+  const handleClose = () => setShow (false);
+  const handleShow = () => setShow (true);
+  const [errMsg, setErrMsg] = useState ('');
+  const [sucMsg, setSucMsg] = useState ('');
+  const [myEmail, setMyEmail] = useState ('');
   const editEmail = () => {
-    console.log ('edit email');
+    // 0. start loading
+    // 1. check if mail exists
+    // if yes
+    doesEmailExists (myEmail).then (res => {
+      if (res.data) {
+        setErrMsg ('Mail already in use!');
+        setSucMsg ('');
+      } else {
+        setErrMsg ('');
+        setSucMsg (
+          'We have sent you a link to your email, click on it to confirm'
+        );
+        // send email to confirm update mail
+        const userId = user.id;
+
+        setUserSpare3 (userId).then (res => {
+          const token = res.data;
+
+          const full =
+            window.location.protocol +
+            '//' +
+            window.location.hostname +
+            (window.location.port ? ':' + window.location.port : '');
+          const url = `${full}/activateMail/${myEmail}/${userId}/${token}`;
+
+          const to = user.email;
+          const subject = 'Change Email';
+          const text = `Click on this link to change your email: ${url}`;
+          const onSuccess = e => {};
+          sendMail (to, subject, text, onSuccess);
+        });
+
+        setTimeout (() => {
+          handleClose ();
+        }, 2000);
+      }
+    });
   };
   useEffect (() => {
     console.log ('user', user);
   }, []);
+
   return (
     <div>
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Change Email</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <input
+            className="form-control m-2"
+            id="email"
+            name="email"
+            type="email"
+            placeholder="Email"
+            value={myEmail}
+            onChange={e => {
+              setMyEmail (e.target.value);
+            }}
+          />
+          {sucMsg !== '' ? <div className="successm ml-2">{sucMsg}</div> : null}
+          {errMsg !== '' ? <div className="error ml-2">{errMsg}</div> : null}
+        </Modal.Body>
+        <Button onClick={editEmail}>Change</Button>
 
+      </Modal>
       <h1 className="text-center m-5">Profile Details</h1>
       <div className="d-flex flex-column align-content-sm-start flex-wrap">
 
@@ -36,7 +110,7 @@ export default function ProfilePage () {
         <div className="p-2 m-2 d-flex justify-content-between">
           <div>
             <AiFillEdit
-              onClick={editEmail}
+              onClick={handleShow}
               color="#0e7bf1"
               className="pointer"
               size={'25px'}

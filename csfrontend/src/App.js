@@ -17,6 +17,8 @@ import ChangePassword from './pages/ChangePassword';
 import E404Page from './pages/E404Page';
 import ForgotPage from './pages/ForgotPage';
 import ActivateAccount from './pages/ActivateAccount';
+import ActivateMail from './pages/ActivateMail';
+
 import About from './pages/About';
 import ProfilePage from './pages/ProfilePage';
 
@@ -42,6 +44,7 @@ function App () {
             <Route path="/" exact component={LogInPage} />
             <Route path="/ch/:id/:token" exact component={ChangePassword} />
             <Route path="/a/:id/:token" exact component={ActivateAccount} />
+            <Route path="/activateMail/:email/:id/:token" exact component={ActivateMail} />
 
             <Route path="/404" exact component={E404Page} />
 
