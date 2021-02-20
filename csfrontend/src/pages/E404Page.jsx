@@ -1,5 +1,5 @@
 import React from 'react';
-import {Player, Controls} from '@lottiefiles/react-lottie-player';
+import {Player} from '@lottiefiles/react-lottie-player';
 
 export default function E404Page () {
   return (

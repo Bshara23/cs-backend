@@ -1,14 +1,13 @@
 import React, {useEffect} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
-import {useSelector, useDispach} from 'react-redux';
+import {useSelector} from 'react-redux';
 import LogInPage from './pages/LogInPage'
 import SignUpPage from './pages/SignUpPage'
 import DashboardPage from './pages/DashboardPage'
 import PCsPage from './pages/PCsPage'
 import PhonesPage from './pages/PhonesPage'
 
-import TestPage from './pages/TestPage'
 import ChangePassword from './pages/ChangePassword'
 import E404Page from './pages/E404Page'
 import ForgotPage from './pages/ForgotPage'

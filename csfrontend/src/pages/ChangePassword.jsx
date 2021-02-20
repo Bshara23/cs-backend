@@ -3,7 +3,7 @@ import {getUserSpare1, updatePasswordByToken, setUserSpare1} from '../API/API';
 import TemporaryAlert from '../components/TemporaryAlert';
 import {useHistory} from 'react-router-dom';
 import ReCaptcha from '@matt-block/react-recaptcha-v2';
-import {SITE_KEY, SECRET_KEY} from '../data/Consts';
+import {SITE_KEY} from '../data/Consts';
 import * as Yup from 'yup';
 import {useFormik} from 'formik';
 var sha256 = require ('js-sha256');

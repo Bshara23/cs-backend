@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {getUserSpare2, setUserSpare2} from '../API/API';
 import {useHistory} from 'react-router-dom';
-var sha256 = require ('js-sha256');
 
 export default function ActivateAccount({match}) {
   const history = useHistory ();

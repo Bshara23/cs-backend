@@ -1,4 +1,4 @@
-import React, {useState, useRef, useEffect} from 'react';
+import React, {useState, useRef} from 'react';
 import {Player} from '@lottiefiles/react-lottie-player';
 import TemporaryAlert from '../components/TemporaryAlert';
 import {doesEmailExists, register, sendMail} from '../API/API';

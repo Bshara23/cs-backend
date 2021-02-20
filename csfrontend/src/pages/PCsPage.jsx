@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import pcs from '../data/pcs.json';
 import BasicCard from '../components/BasicCard';
 import CreditCard from '../components/CreditCard';
-import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
 export default function PCsPage () {

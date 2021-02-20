@@ -1,8 +1,7 @@
 import React, {useState, useRef} from 'react';
-import {Player, Controls} from '@lottiefiles/react-lottie-player';
+import {Player} from '@lottiefiles/react-lottie-player';
 import TemporaryAlert from '../components/TemporaryAlert';
 import {
-  setUserSpare1byEmail,
   sendMail,
   generateUserSpare1ByEmail,
 } from '../API/API';
