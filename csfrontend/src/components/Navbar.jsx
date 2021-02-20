@@ -17,7 +17,10 @@ export default function Navbar2(props) {
     dispatch(setCurrentUser(null));
     removeCookie("user");
   };
+  const onProfileClick = () => {
+    history.push ('/profile');
 
+  }
   const onMainPageClick = () => {
     history.push ('/dashboard');
 
@@ -29,8 +32,11 @@ export default function Navbar2(props) {
         sticky="top"
         expand="lg"
         className="navbarc myNavBar shadow"
-      >
-        <Navbar.Brand onClick={onMainPageClick} className="pointer" id="gradingSystem">Hasob <span className="navbar-username">{user && `${user.name} ${user.family_name}`}</span></Navbar.Brand>
+      >        
+      
+      <Navbar.Brand onClick={onMainPageClick} className="pointer" id="gradingSystem">Hasob </Navbar.Brand>
+
+        <Navbar.Brand className="pointer navbar-username" id="gradingSystemd"> <a href="/profile">{user && `${user.name} ${user.family_name}`}</a></Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="mr-auto">

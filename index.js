@@ -150,7 +150,6 @@ app.put ('/user_password/:id', async (req, res) => {
 app.put ('/updatePasswordByToken', async (req, res) => {
   try {
     const {id, spare1, newPassword} = req.body;
-    console.log (req.body);
     const updateUser = await pool.query (
       'UPDATE users SET password = $3 WHERE id = $1 AND spare1 = $2;',
       [id, spare1, newPassword]
@@ -160,7 +159,19 @@ app.put ('/updatePasswordByToken', async (req, res) => {
     res.json ('User password was not updated');
   }
 });
-
+// update user's password
+app.put ('/updatePassword', async (req, res) => {
+  try {
+    const {id, newPassword} = req.body;
+    const updateUser = await pool.query (
+      'UPDATE users SET password = $2 WHERE id = $1;',
+      [id, newPassword]
+    );
+    res.json (updateUser.rowCount);
+  } catch (error) {
+    res.json ('User password was not updated');
+  }
+});
 // update user's spare1
 app.put ('/spare1', async (req, res) => {
   try {

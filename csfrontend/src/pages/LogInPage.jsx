@@ -62,7 +62,9 @@ export default function LogInPage () {
           if (rememberMe) {
             setCookie ('user', {email, password});
           }
-          history.push ('/dashboard');
+          setTimeout (() => {
+            history.push ('/dashboard');
+          }, 500);
           dispatch (setCurrentUser (res.data));
         } else if (res.data.id != null) {
           setAlertType ('info');

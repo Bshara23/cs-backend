@@ -138,3 +138,17 @@ export const updatePasswordByToken = async (id, spare1, newPassword) => {
     console.error (error);
   }
 };
+export const updatePassword = async (id, newPassword) => {
+  try {
+    return await axios
+      .put (API_URL + `/updatePassword`, {
+        id,
+        newPassword,
+      })
+      .then (res => {
+        return res;
+      });
+  } catch (error) {
+    console.error (error);
+  }
+};
