@@ -130,7 +130,7 @@ export default function SignUpPage () {
         ref={alertRef}
       />
       <div className=" d-flex flex-column align-items-md-center">
-      <h2 className="m-5">Sign Up</h2>
+        <h2 className="m-5">Sign Up</h2>
 
         <div className="form-group">
           <input
@@ -186,14 +186,14 @@ export default function SignUpPage () {
             placeholder="Password"
             {...formik.getFieldProps ('password')}
           />
-        
+
         </div>
         <div className="shrink">
-        {formik.touched.password && formik.errors.password
+          {formik.touched.password && formik.errors.password
             ? <p className="error ml-2">{formik.errors.password}</p>
             : null}
         </div>
-        
+
         <div className="form-group">
 
           <input
@@ -232,23 +232,25 @@ export default function SignUpPage () {
           onError={() =>
             console.log ('Something went wrong, check your conenction')}
         />
-        <div className="form-group">
+        <div className=" form-group">
 
-          <button
-            //disabled={!validateForm ()}
-            type="submit"
-            className="btn btn-primary mt-3"
-            disabled={!(formik.isValid && formik.dirty && isVerified)}
-          >
-            Sign Up
-          </button>
+          <div className="d-flex justify-content-center">
+            {' '}<button
+              //disabled={!validateForm ()}
+              type="submit"
+              className="btn btn-primary mt-3"
+              disabled={!(formik.isValid && formik.dirty && isVerified)}
+            >
+              Sign Up
+            </button>
+          </div>
 
           <div className="form-group mt-3">
-            Already have an account? 
-          <a className="mb-3 pointer" size="m" onClick={onLogInClick}>
-            {' '}Sign In
-          </a>
-        </div>
+            Already have an account?
+            <a className="mb-3 pointer" size="m" onClick={onLogInClick}>
+              {' '}Sign In
+            </a>
+          </div>
         </div>
 
       </div>

@@ -62,6 +62,9 @@ Use these predefined accounts to test the application.
 
 And that's it, the database is ready!
 
+Note: database username and password: <br>
+```user: 'postgres'```<br>
+```password: 'admin'```<br>
 
 ## Instruction for running the server:<a name = "server"></a>
 

@@ -6,6 +6,11 @@ import termsPdf from '../data/terms.pdf';
 import {IoLogoTwitter} from 'react-icons/io5';
 import {IoLogoFacebook} from 'react-icons/io5';
 import {FaTelegramPlane} from 'react-icons/fa';
+import {BiMap} from 'react-icons/bi';
+import {FaPhone} from 'react-icons/fa';
+import {MdEmail} from 'react-icons/md';
+import {BiWorld} from 'react-icons/bi';
+import {Player} from '@lottiefiles/react-lottie-player';
 
 export default function About () {
   const history = useHistory ();
@@ -19,18 +24,45 @@ export default function About () {
   return (
     <div>
 
-      <h1 className="text-center m-5">About</h1>
+      <Player
+        src="https://assets9.lottiefiles.com/private_files/lf30_oSaQwF.json"
+        background="transparent"
+        speed="1"
+        style={{height: '300px', width: '300px'}}
+        loop
+        autoplay
+      />
+      <h1 className="text-center">About</h1>
       <h3 className="text-center m-5">Got any questions? contact us!</h3>
 
-      <div className="d-flex flex-column justify-content-md-around align-content-md-center">
+      <div className="d-flex flex-column justify-content-center align-content-center">
+        <div className="d-flex flex-row justify-content-center align-content-center">
+          <a
+            className="text-center"
+            href="http://maps.google.com/?q=51 Snunit, Karmiel, The North, Israel"
+            target="_blank"
+          >
+            <BiMap color="black" /> {' '}51 Snunit, Karmiel, The North, Israel.
+          </a>
+        </div>
 
-        <div className="m-3 align-self-center">Phone: 052-2865645</div>
-        <div className="m-3 align-self-center">
-          Email: <a href="mailto: hasouby@hotmail.com">hasouby@hotmail.com</a>
+        <div className="d-flex flex-row justify-content-center align-content-center m-2">
+          <FaPhone className="mt-1 mr-2" />{' '}Phone: 052-2865645
         </div>
-        <div className="m-3 align-self-center">
-          Website: <a href="https://csclientserverapp.herokuapp.com/">hasouby</a>
+
+        <div className="d-flex flex-row justify-content-center align-content-center m-2">
+          <MdEmail className="mt-1 mr-2" />
+          {' '}
+          Email:
+          {' '}
+          <a href="mailto: hasouby@hotmail.com">hasouby@hotmail.com</a>
         </div>
+        <div className="d-flex flex-row justify-content-center align-content-center m-2">
+          <BiWorld className="mt-1 mr-2" />{' '}Organization Website:
+          {' '}
+          <a href="https://www.braude.ac.il/">hasoub</a>
+        </div>
+
         <a
           className="m-3 align-self-center"
           href={privacyPdf}
@@ -38,6 +70,8 @@ export default function About () {
           rel="noopener noreferrer"
           target="_blank"
         >
+          <div className="mt-5" />
+
           <Button className="" variant="primary" onClick={onTermsClick}>
             Terms & Conditions
           </Button>
@@ -66,7 +100,7 @@ export default function About () {
 
         </a>
 
-        <div className="d-flex flex-row justify-content-md-center align-content-md-center">
+        <div className="d-flex flex-row justify-content-center align-content-md-center mt-3">
 
           <a href="https://twitter.com/" className="m-3">
             <IoLogoTwitter className="pointer" size={'30px'} />

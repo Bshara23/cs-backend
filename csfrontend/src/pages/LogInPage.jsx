@@ -127,9 +127,11 @@ export default function LogInPage () {
     },
   });
   return (
-    <form onSubmit={formik.handleSubmit}>
+    <form  onSubmit={formik.handleSubmit}>
+      <br/>
       <Player
         autoplay
+        speed="0.5"
         loop
         src="https://assets1.lottiefiles.com/datafiles/RvQQlJ3ODelSiQi/data.json"
         style={{height: '300px', width: '300px'}}
@@ -217,18 +219,19 @@ export default function LogInPage () {
             </p>
             <Button
               className="mb-3"
-              //disabled={email.length == 0}
               size="m"
               onClick={() => resendActivationLink (formik.values.email)}
             >
               Resend Activation Link
             </Button>
           </div>}
-        <p className="forgot-password text-right">
+        <p className="forgot-password text-right mb-5">
           <a href="/reset-password">Forgot Password?</a>
         </p>
 
-      </div>
+      </div> 
+
+      <br/>
     </form>
   );
 }

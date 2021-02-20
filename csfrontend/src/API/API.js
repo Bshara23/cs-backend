@@ -37,7 +37,7 @@ export const register = async (
         name: fname,
         family_name: lname,
         email,
-        promo_code: promoCode,
+        promo_code: '0',
         password,
       })
       .then (res => {
@@ -175,11 +175,43 @@ export const getUserSpare3 = async id => {
     console.error (error);
   }
 };
-export const setUserSpare3 = async (id) => {
+export const setUserSpare3 = async id => {
   try {
     return await axios.put (API_URL + `/spare3`, {id}).then (res => {
       return res;
     });
+  } catch (error) {
+    console.error (error);
+  }
+};
+
+export const updateUser = async ({
+  id,
+  name,
+  family_name,
+  email,
+  promo_code,
+  zip_code,
+  street,
+  country,
+  city,
+}) => {
+  try {
+    return await axios
+      .put (API_URL + `/users`, {
+        id,
+        name,
+        family_name,
+        email,
+        promo_code,
+        zip_code,
+        street,
+        country,
+        city,
+      })
+      .then (res => {
+        return res;
+      });
   } catch (error) {
     console.error (error);
   }

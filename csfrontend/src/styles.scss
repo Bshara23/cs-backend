@@ -41,6 +41,12 @@ body {
 
   border-radius: 5px;
 }
+.logoimg{
+  padding: 5px;
+  background: #0e7bf1;
+  border-radius: 7px;
+  width: 40%;
+}
 .navbar-username {
   font-size: medium;
   color: #0e7bf1;
@@ -124,7 +130,7 @@ h1,
 .forgot-password,
 .forgot-password a {
   text-align: right;
-  font-size: 13px;
+  font-size: 16px;
   padding-top: 10px;
   color: #7f7d7d;
   margin: 0;

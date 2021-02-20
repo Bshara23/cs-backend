@@ -21,6 +21,7 @@ import ActivateMail from './pages/ActivateMail';
 
 import About from './pages/About';
 import ProfilePage from './pages/ProfilePage';
+import ComingSoon from './pages/ComingSoon';
 
 import Navbar from './components/Navbar';
 import {currentUser} from './data/Global';
@@ -60,6 +61,8 @@ function App () {
                 <Route path="/phones" exact component={PhonesPage} />
                 <Route path="/about" exact component={About} />
                 <Route path="/profile" exact component={ProfilePage} />
+                <Route path="/tvs" exact component={ComingSoon} />
+
               </div>}
 
             <Route path="/404" component={E404Page} />

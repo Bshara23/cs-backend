@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useRef} from 'react';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import {currentUser, setCurrentUser} from '../data/Global';
 import {AiFillEdit} from 'react-icons/ai';
 import TemporaryAlert from '../components/TemporaryAlert';
@@ -14,25 +14,27 @@ import {
   updateEmail,
   sendMail,
   setUserSpare3,
+  updateUser,
 } from '../API/API';
 import Modal from 'react-bootstrap/Modal';
 import {Button} from 'react-bootstrap';
-const {v4: uuidv4} = require ('uuid');
 
 var sha256 = require ('js-sha256');
 
 export default function ProfilePage () {
   const user = useSelector (currentUser);
+  const dispatch = useDispatch ();
+
   const [show, setShow] = useState (false);
   const handleClose = () => setShow (false);
   const handleShow = () => setShow (true);
   const [errMsg, setErrMsg] = useState ('');
   const [sucMsg, setSucMsg] = useState ('');
   const [myEmail, setMyEmail] = useState ('');
+  const [showNameChange, setShowNameChange] = useState (false);
+  const [showEmailPhone, setShowEmailPhone] = useState (false);
+  const [showLocation, setShowLocation] = useState (false);
   const editEmail = () => {
-    // 0. start loading
-    // 1. check if mail exists
-    // if yes
     doesEmailExists (myEmail).then (res => {
       if (res.data) {
         setErrMsg ('Mail already in use!');
@@ -68,9 +70,6 @@ export default function ProfilePage () {
       }
     });
   };
-  useEffect (() => {
-    console.log ('user', user);
-  }, []);
 
   return (
     <div>
@@ -96,35 +95,138 @@ export default function ProfilePage () {
         <Button onClick={editEmail}>Change</Button>
 
       </Modal>
+
+      <Modal show={showNameChange} onHide={() => setShowNameChange (false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Change Name</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <ChangeName
+            fname_s={user.name}
+            lname_s={user.family_name}
+            onSaveClick={() => {
+              setShowNameChange (false);
+            }}
+          />
+        </Modal.Body>
+
+      </Modal>
+
+      <Modal show={showEmailPhone} onHide={() => setShowEmailPhone (false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Change Phone</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <ChangePhone
+            phone={user.promo_code}
+            onSaveClick={() => {
+              setShowEmailPhone (false);
+            }}
+          />
+        </Modal.Body>
+
+      </Modal>
+
+      <Modal show={showLocation} onHide={() => setShowLocation (false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Change Location Info</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <ChangeLocation
+            country={user.country}
+            city={user.city}
+            street={user.street}
+            zipCode={user.zip_code}
+            onSaveClick={() => {
+              setShowLocation (false);
+            }}
+          />
+        </Modal.Body>
+
+      </Modal>
+
       <h1 className="text-center m-5">Profile Details</h1>
-      <div className="d-flex flex-column align-content-sm-start flex-wrap">
+      <div className="row">
+        <div className="border-bottom w-100 ml-3 mr-3" />
 
-        <div className="p-2 m-2 d-flex justify-content-between">
-          <div className="">First Name: {user.name}</div>
-          <div>Last Name: {user.family_name}</div>
-          <div>Phone Number: -</div>
-          <div>Country: {user.name}</div>
+        <div className="row p-2 m-2 d-flex justify-content-between w-100">
 
-        </div>
+          <div className="row col-8">
+            <div className="col-12 col-md-4 ">First Name: {user.name}</div>
+            <div className="col-12 col-md-4 ">
+              Last Name: {user.family_name}
+            </div>
 
-        <div className="p-2 m-2 d-flex justify-content-between">
-          <div>
-            <AiFillEdit
-              onClick={handleShow}
-              color="#0e7bf1"
-              className="pointer"
-              size={'25px'}
-            />
-            Email:
-            {' '}
-            {user.email}
           </div>
-          <div>City: {user.city}</div>
-          <div>Street: {user.street}</div>
-          <div>Zip Code: {user.zip_code}</div>
+
+          <button
+            onClick={setShowNameChange}
+            type="submit"
+            className="col-4  btn btn-primary"
+          >
+            Update
+          </button>
         </div>
-        <span class="border-bottom w-100" />
+
+        <div className="p-2 m-2 d-flex justify-content-between">
+
+          {/* <div>Phone Number: - </div> */}
+
+        </div>
+        <div className="border-bottom w-100 ml-3 mr-3" />
+        <div className="row p-2 m-2 d-flex justify-content-between w-100 ">
+
+          <div className="row col-8">
+            <div className="col-12 col-md-6">Email: {user.email}</div>
+          </div>
+
+          <button
+            onClick={() => setShow (true)}
+            type="submit"
+            className="col-4  btn btn-primary"
+          >
+            Update
+          </button>
+        </div>
+        <div className="border-bottom w-100 ml-3 mr-3" />
+
+        <div className="row p-2 m-2 d-flex justify-content-between w-100">
+
+          <div className="row col-8">
+            <div className="col-12 col-md-6">Phone: {user.promo_code}</div>
+          </div>
+
+          <button
+            onClick={() => setShowEmailPhone (true)}
+            type="submit"
+            className="col-4  btn btn-primary"
+          >
+            Update
+          </button>
+        </div>
+        <div className="border-bottom w-100 ml-3 mr-3" />
+
+        <div className="row p-2 m-2 d-flex justify-content-between w-100">
+          <div className="row col-8">
+
+            <div className="col-12 col-md-6 ">Country: {user.country}</div>
+
+            <div className="col-12 col-md-6 ">City: {user.city}</div>
+            <div className="col-12 col-md-6 ">Street: {user.street}</div>
+            <div className="col-12 col-md-6 ">Zip Code: {user.zip_code}</div>
+          </div>
+
+          <button
+            onClick={() => setShowLocation (true)}
+            type="submit"
+            className="col-4 col-md-4 btn btn-primary"
+          >
+            Update
+          </button>
+
+        </div>
       </div>
+      <div className="border-bottom w-100" />
 
       <div className="p-2 m-2  d-flex align-content-sm-center flex-wrap">
 
@@ -135,6 +237,270 @@ export default function ProfilePage () {
     </div>
   );
 }
+
+const ChangeLocation = ({country, city, street, zipCode, onSaveClick}) => {
+  const user = useSelector (currentUser);
+  const dispatch = useDispatch ();
+
+  const handleSubmit = ({country, city, street, zipCode}) => {
+    const newUser = {...user};
+
+    newUser.country = country;
+    newUser.city = city;
+    newUser.zip_code = zipCode;
+    newUser.street = street;
+
+    dispatch (setCurrentUser (newUser));
+
+    updateUser (newUser);
+
+    onSaveClick ();
+  };
+
+  const formik = useFormik ({
+    initialValues: {
+      country,
+      city,
+      street,
+      zipCode,
+    },
+    validationSchema: Yup.object ({
+      country: Yup.string ().required ('Country is required'),
+      city: Yup.string ().required ('City is required'),
+      street: Yup.string ().required ('Street is required'),
+      zipCode: Yup.string ().required ('Zip Code is required'),
+    }),
+    onSubmit: values => {
+      handleSubmit (values);
+    },
+  });
+  return (
+    <form onSubmit={formik.handleSubmit}>
+
+      <div className=" d-flex flex-column align-items-md-center">
+
+        <div className="form-group">
+
+          <input
+            className="form-control m-2"
+            id="country"
+            name="country"
+            type="text"
+            placeholder="Country"
+            {...formik.getFieldProps ('country')}
+          />
+          {formik.touched.country && formik.errors.country
+            ? <div className="error ml-2">{formik.errors.country}</div>
+            : null}
+        </div>
+
+        <div className="form-group">
+
+          <input
+            className="form-control m-2"
+            id="city"
+            name="city"
+            type="text"
+            placeholder="City"
+            {...formik.getFieldProps ('city')}
+          />
+          {formik.touched.city && formik.errors.city
+            ? <div className="error ml-2">{formik.errors.city}</div>
+            : null}
+        </div>
+
+        <div className="form-group">
+
+          <input
+            className="form-control m-2"
+            id="street"
+            name="street"
+            type="text"
+            placeholder="Street"
+            {...formik.getFieldProps ('street')}
+          />
+          {formik.touched.street && formik.errors.street
+            ? <div className="error ml-2">{formik.errors.street}</div>
+            : null}
+        </div>
+
+        <div className="form-group">
+
+          <input
+            className="form-control m-2"
+            id="zipCode"
+            name="zipCode"
+            type="text"
+            placeholder="zipCode"
+            {...formik.getFieldProps ('zipCode')}
+          />
+          {formik.touched.zipCode && formik.errors.zipCode
+            ? <div className="error ml-2">{formik.errors.zipCode}</div>
+            : null}
+        </div>
+
+        <div className="form-group">
+
+          <button
+            type="submit"
+            className="btn btn-primary mt-3"
+            disabled={!formik.isValid}
+          >
+            Save
+          </button>
+        </div>
+
+      </div>
+
+    </form>
+  );
+};
+
+const ChangePhone = ({phone, onSaveClick}) => {
+  const user = useSelector (currentUser);
+  const dispatch = useDispatch ();
+
+  const handleSubmit = ({phone}) => {
+    const newUser = {...user};
+
+    newUser.promo_code = phone;
+
+    dispatch (setCurrentUser (newUser));
+
+    updateUser (newUser);
+
+    onSaveClick ();
+  };
+
+  const formik = useFormik ({
+    initialValues: {
+      phone: phone,
+    },
+    validationSchema: Yup.object ({
+      phone: Yup.string ().required ('Phone is required'),
+    }),
+    onSubmit: values => {
+      handleSubmit (values);
+    },
+  });
+  return (
+    <form onSubmit={formik.handleSubmit}>
+
+      <div className=" d-flex flex-column align-items-md-center">
+
+        <div className="form-group">
+
+          <input
+            className="form-control m-2"
+            id="phone"
+            name="phone"
+            type="text"
+            placeholder="Phone"
+            {...formik.getFieldProps ('phone')}
+          />
+          {formik.touched.phone && formik.errors.phone
+            ? <div className="error ml-2">{formik.errors.phone}</div>
+            : null}
+        </div>
+
+        <div className="form-group">
+
+          <button
+            type="submit"
+            className="btn btn-primary mt-3"
+            disabled={!formik.isValid}
+          >
+            Save
+          </button>
+        </div>
+
+      </div>
+
+    </form>
+  );
+};
+
+const ChangeName = ({fname_s, lname_s, onSaveClick}) => {
+  const user = useSelector (currentUser);
+  const dispatch = useDispatch ();
+
+  const handleSubmit = ({fname, lname}) => {
+    const newUser = {...user};
+
+    newUser.name = fname;
+    newUser.family_name = lname;
+
+    dispatch (setCurrentUser (newUser));
+
+    updateUser (newUser);
+
+    onSaveClick ();
+  };
+
+  const formik = useFormik ({
+    initialValues: {
+      fname: fname_s,
+      lname: lname_s,
+    },
+    validationSchema: Yup.object ({
+      fname: Yup.string ().required ('First name is required'),
+      lname: Yup.string ().required ('Last name is required'),
+    }),
+    onSubmit: values => {
+      handleSubmit (values);
+    },
+  });
+  return (
+    <form onSubmit={formik.handleSubmit}>
+
+      <div className=" d-flex flex-column align-items-md-center">
+
+        <div className="form-group">
+
+          <input
+            className="form-control m-2"
+            id="fname"
+            name="fname"
+            type="text"
+            placeholder="First Name"
+            {...formik.getFieldProps ('fname')}
+          />
+          {formik.touched.oldPassword && formik.errors.oldPassword
+            ? <div className="error ml-2">{formik.errors.oldPassword}</div>
+            : null}
+        </div>
+
+        <div className="form-group">
+
+          <input
+            className="form-control m-2"
+            id="lname"
+            name="lname"
+            type="text"
+            placeholder="Last Name"
+            {...formik.getFieldProps ('lname')}
+          />
+          {formik.touched.password && formik.errors.password
+            ? <div className="error ml-2">{formik.errors.password}</div>
+            : null}
+        </div>
+
+        <div className="form-group">
+
+          <button
+            type="submit"
+            className="btn btn-primary mt-3"
+            disabled={!formik.isValid}
+          >
+            Save
+          </button>
+        </div>
+
+      </div>
+
+    </form>
+  );
+};
 
 const ChangePassword = ({oldPassCopy, userId}) => {
   const alertRef = useRef ();
@@ -210,7 +576,6 @@ const ChangePassword = ({oldPassCopy, userId}) => {
       />
 
       <div className=" d-flex flex-column align-items-md-center">
-        <h2 className="m-5">Change Password</h2>
 
         <div className="form-group">
 

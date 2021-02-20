@@ -51,6 +51,23 @@ app.post ('/sendMail', async (req, res) => {
   }
 });
 
+
+
+// update a user
+app.put ('/users', async (req, res) => {
+  try {
+    const {id, name, family_name, email, promo_code, zip_code, street, country, city} = req.body;
+    const updateUser = await pool.query (
+      'UPDATE users SET name = $2, family_name = $3, email = $4, promo_code = $5, zip_code = $6, street = $7, country = $8, city = $9 WHERE id = $1;',
+      [id, name, family_name, email, promo_code, zip_code, street, country, city]
+    );
+    res.json (updateUser.rowCount);
+  } catch (error) {
+    res.json ('User was not updated');
+  }
+});
+
+
 // create a user
 app.post ('/users', async (req, res) => {
   try {

@@ -13,7 +13,7 @@ export default function DashboardPage () {
   return (
     <div>
 
-      <h1 className="text-center m-5">Welcome to Hasob </h1>
+      <h1 className="text-center m-5">Welcome to Hasoub </h1>
       <h3 className="text-center m-5">Check out our latest products! </h3>
       <Modal size="lg" show={show} onHide={handleClose}>
         <Modal.Header closeButton>
