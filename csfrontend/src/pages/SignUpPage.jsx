@@ -1,10 +1,9 @@
 import React, {useState, useRef, useEffect} from 'react';
-import {Player, Controls} from '@lottiefiles/react-lottie-player';
+import {Player} from '@lottiefiles/react-lottie-player';
 import TemporaryAlert from '../components/TemporaryAlert';
 import {doesEmailExists, register, sendMail} from '../API/API';
 import ReCaptcha from '@matt-block/react-recaptcha-v2';
-import {SITE_KEY, SECRET_KEY} from '../data/Consts';
-import SmartPasswordInput from '../components/SmartPasswordInput';
+import {SITE_KEY} from '../data/Consts';
 import * as Yup from 'yup';
 import {useFormik} from 'formik';
 import {useHistory} from 'react-router-dom';
