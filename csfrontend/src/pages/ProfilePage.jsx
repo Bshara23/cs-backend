@@ -504,7 +504,8 @@ const ChangeName = ({fname_s, lname_s, onSaveClick}) => {
 
 const ChangePassword = ({oldPassCopy, userId}) => {
   const alertRef = useRef ();
-
+  const user = useSelector (currentUser);
+  const dispatch = useDispatch ();
   const history = useHistory ();
 
   const [alertType, setAlertType] = useState ('');
@@ -513,9 +514,11 @@ const ChangePassword = ({oldPassCopy, userId}) => {
   const [isVerified, setIsVerified] = useState (false);
 
   const handleSubmit = ({oldPassword, password}) => {
+    
     // TODO create in api
     // 1. check if password are equal in DB
-    if (sha256 (oldPassword) === oldPassCopy) {
+
+    if (sha256 (oldPassword) !== user.password) {
       setAlertType ('warning');
       setAlertHeading ('Error');
       setAlertBody ('Old password is wrong!');
@@ -531,6 +534,15 @@ const ChangePassword = ({oldPassCopy, userId}) => {
         setAlertHeading ('Success');
         setAlertBody ('Password has been changed successfuly!');
         alertRef.current.showAlert ();
+
+        const newUser = {...user};
+
+        newUser.password = sha256 (password);
+      
+
+        dispatch (setCurrentUser (newUser));
+
+        updateUser (newUser);
       } else {
         // password didn't change
         setAlertType ('warning');
