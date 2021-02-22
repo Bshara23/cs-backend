@@ -20,7 +20,9 @@ https://csclientserverapp.herokuapp.com/
 - [PostgreSQL](https://www.postgresql.org/)
 
 
-
+### Technologies
+- [React](https://reactjs.org/)
+- [Bootstrap](https://getbootstrap.com/)
 
 
 ## 🧪 Test Accounts <a name = "testaccounts"></a>
